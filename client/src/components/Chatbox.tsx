@@ -4,14 +4,15 @@ import { MessageArgs } from '../App';
 interface ChatboxProps {
   yourName?: string;
   socket?: any;
+  room?: string;
 }
-const ChatBox: React.FC<ChatboxProps> = ({ yourName, socket }) => {
+const ChatBox: React.FC<ChatboxProps> = ({ yourName, socket, room }) => {
   const [messages, setMessages] = useState<string[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
   const handleSendMessage = () => {
     if (newMessage.trim() !== '') {
       setNewMessage('');
-      socket.emit('message', { user: yourName, message: newMessage });
+      socket.emit('message', { user: yourName, message: newMessage, room });
     }
   };
   if (socket) {

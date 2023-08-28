@@ -18,7 +18,9 @@ const App = () => {
   const [socket, setSocket] = React.useState<any>(null);
   const handleCreateRoom = () => {};
 
-  const handleJoinRoom = () => {};
+  const handleJoinRoom = (name: string, room: string) => {
+    socket.emit('join', { room, user: name });
+  };
 
   useEffect(() => {
     if (socket) return;
@@ -82,7 +84,7 @@ const App = () => {
             Join Room
           </Button>
         </Grid>
-        <Chatbox yourName={username} socket={socket} />
+        <Chatbox yourName={username} socket={socket} room={roomId} />
         <JoinRoom
           onClose={() => {
             setOpenJoinModal(false);
@@ -92,6 +94,7 @@ const App = () => {
             setUsername(name);
             setRoomId(roomId);
             setOpenJoinModal(false);
+            handleJoinRoom(name, roomId);
           }}
         />
         <CreateRoomModal

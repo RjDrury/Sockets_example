@@ -36,9 +36,16 @@ const io = socketIo(httpServer, {
 io.on('connection', (socket) => {
   console.log('A user connected');
 
+  socket.on('join', ({ user, room }) => {
+    socket.join(room);
+    io.to(room).emit('message', {
+      user: 'System',
+      message: `${user} has joined the chat`
+    });
+  });
+
   socket.on('message', (message) => {
-    console.log('Message Received: ' + message);
-    io.emit('message', message);
+    io.to(message.room).emit('message', message);
   });
 
   socket.on('disconnect', () => {
